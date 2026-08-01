@@ -2,12 +2,17 @@ from fastapi import FastAPI
 from typing import List
 
 from app.models import Transaction, TransactionCreate
+
 from app.crud import (
     get_all_transactions,
     add_transaction,
     remove_transaction
 )
+
 from app.analytics_service import get_financial_report
+
+from app.users import router as user_router
+
 
 
 app = FastAPI(
@@ -16,8 +21,15 @@ app = FastAPI(
 )
 
 
+
+# Authentication Routes
+app.include_router(user_router)
+
+
+
 @app.get("/")
 def home():
+
     return {
         "message": "Finance Analytics API Running"
     }
@@ -34,7 +46,9 @@ def get_transactions():
 
 # POST new transaction
 @app.post("/transactions")
-def create_transaction(transaction: TransactionCreate):
+def create_transaction(
+    transaction: TransactionCreate
+):
 
     add_transaction(transaction)
 
@@ -46,7 +60,9 @@ def create_transaction(transaction: TransactionCreate):
 
 # DELETE transaction
 @app.delete("/transactions/{transaction_id}")
-def delete_transaction(transaction_id: int):
+def delete_transaction(
+    transaction_id: int
+):
 
     remove_transaction(transaction_id)
 
