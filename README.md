@@ -74,26 +74,32 @@ The project is built using **FastAPI**, **SQLite**, **Pandas**, **Matplotlib**, 
 Finance-Analytics-System
 
 ├── app
-│   ├── main.py                  # FastAPI API routes
-│   ├── models.py                # Request and response models
-│   ├── database.py              # Database connection
-│   ├── crud.py                  # Database CRUD operations
-│   ├── analytics_service.py     # User based analytics logic
-│   ├── users.py                 # Register and Login APIs
-│   ├── auth.py                  # JWT token creation
-│   ├── security.py              # Password hashing
-│   ├── dependencies.py          # JWT authentication
-│   ├── migrate.py               # Database migration
-│   └── __init__.py
+│ ├── main.py # FastAPI API routes
+│ ├── models.py # Request and response models
+│ ├── database.py # Database connection
+│ ├── crud.py # Database CRUD operations
+│ ├── analytics_service.py # User based analytics logic
+│ ├── users.py # Register and Login APIs
+│ ├── auth.py # JWT token creation
+│ ├── security.py # Password hashing
+│ ├── dependencies.py # JWT authentication
+│ ├── migrate.py # Database migration
+│ └── init.py
 │
 ├── dashboard
-│   └── app.py                   # Streamlit dashboard
+│ └── app.py # Streamlit dashboard
 │
 ├── database
-│   └── finance.db               # SQLite database
+│ └── finance.db # SQLite database
+│
+├── screenshots
+│ ├── login.png # Login page screenshot
+│ ├── dashboard.png # Dashboard screenshot
+│ ├── expense.png # Expense analysis screenshot
+│ └── add_transaction.png # Add transaction screenshot
 │
 ├── tests
-│   └── test_api.py              # API test cases
+│ └── test_api.py # API test cases
 │
 ├── requirements.txt
 └── README.md
@@ -512,6 +518,29 @@ Example result:
 - Advanced dashboard improvements
 - Machine learning based expense prediction
 - Cloud hosting deployment
+
+---
+
+# Screenshots
+
+## Login Page
+
+![Login](screenshots/login.png)
+
+
+## Finance Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+
+## Expense Analysis
+
+![Expense Analysis](screenshots/expense.png)
+
+
+## Add Transaction
+
+![Add Transaction](screenshots/add_transaction.png)
 
 ---
 
