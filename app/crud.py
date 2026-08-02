@@ -1,7 +1,8 @@
 from app.database import get_connection
 
 
-def get_all_transactions():
+
+def get_all_transactions(user_id):
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -9,7 +10,9 @@ def get_all_transactions():
     cursor.execute("""
     SELECT *
     FROM transactions
-    """)
+    WHERE user_id = ?
+    """,
+    (user_id,))
 
     rows = cursor.fetchall()
 
@@ -18,6 +21,7 @@ def get_all_transactions():
     transactions = []
 
     for row in rows:
+
         transactions.append({
             "transaction_id": row[0],
             "user_id": row[1],
@@ -31,7 +35,8 @@ def get_all_transactions():
 
 
 
-def add_transaction(transaction):
+
+def add_transaction(transaction, user_id):
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -42,7 +47,7 @@ def add_transaction(transaction):
     VALUES (?, ?, ?, ?, ?)
     """,
     (
-        transaction.user_id,
+        user_id,
         transaction.amount,
         transaction.category,
         transaction.transaction_type,
@@ -54,7 +59,8 @@ def add_transaction(transaction):
 
 
 
-def remove_transaction(transaction_id):
+
+def remove_transaction(transaction_id, user_id):
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -62,8 +68,12 @@ def remove_transaction(transaction_id):
     cursor.execute("""
     DELETE FROM transactions
     WHERE transaction_id = ?
+    AND user_id = ?
     """,
-    (transaction_id,))
+    (
+        transaction_id,
+        user_id
+    ))
 
     conn.commit()
     conn.close()

@@ -1,20 +1,39 @@
 import pandas as pd
+
 from app.database import get_connection
 
 
 
-def get_financial_report():
+def get_financial_report(user_id):
 
     conn = get_connection()
+
 
     query = """
     SELECT amount, transaction_type
     FROM transactions
+    WHERE user_id = ?
     """
 
-    df = pd.read_sql_query(query, conn)
+
+    df = pd.read_sql_query(
+        query,
+        conn,
+        params=(user_id,)
+    )
+
 
     conn.close()
+
+
+    if df.empty:
+
+        return {
+            "total_income": 0,
+            "total_expense": 0,
+            "savings": 0
+        }
+
 
 
     total_income = df[
@@ -22,16 +41,19 @@ def get_financial_report():
     ]["amount"].sum()
 
 
+
     total_expense = df[
         df["transaction_type"] == "Expense"
     ]["amount"].sum()
 
 
+
     savings = total_income - total_expense
 
 
+
     return {
-        "total_income": total_income,
-        "total_expense": total_expense,
-        "savings": savings
+        "total_income": float(total_income),
+        "total_expense": float(total_expense),
+        "savings": float(savings)
     }
