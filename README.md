@@ -2,7 +2,7 @@
 
 A Python-based financial management and analytics system that tracks income and expenses, provides REST APIs, performs financial analysis, and generates visualization reports.
 
-The project is built using **FastAPI**, **SQLite**, **Pandas**, and **Matplotlib** with JWT based user authentication.
+The project is built using **FastAPI**, **SQLite**, **Pandas**, **Matplotlib**, and **Streamlit** with JWT based user authentication.
 
 ---
 
@@ -20,6 +20,7 @@ The project is built using **FastAPI**, **SQLite**, **Pandas**, and **Matplotlib
 - Calculate savings
 - Category-wise expense analysis
 - Generate financial charts
+- Interactive Streamlit dashboard
 - SQLite database integration
 - Automated API testing using Pytest
 
@@ -54,6 +55,11 @@ The project is built using **FastAPI**, **SQLite**, **Pandas**, and **Matplotlib
 
 - Matplotlib
 - Seaborn
+- Plotly
+
+## Dashboard
+
+- Streamlit
 
 ## Testing
 
@@ -79,6 +85,9 @@ Finance-Analytics-System
 │   ├── dependencies.py          # JWT authentication
 │   ├── migrate.py               # Database migration
 │   └── __init__.py
+│
+├── dashboard
+│   └── app.py                   # Streamlit dashboard
 │
 ├── database
 │   └── finance.db               # SQLite database
@@ -164,7 +173,7 @@ Request:
 
 ```json
 {
-  "email": "mantu@gmail.com",
+  "username": "mantu@gmail.com",
   "password": "123456"
 }
 ```
@@ -290,7 +299,7 @@ Response:
 }
 ```
 
----
+------
 
 # Financial Analytics API
 
@@ -312,6 +321,91 @@ Example Response:
   "total_expense": 1300,
   "savings": 700
 }
+```
+
+---
+
+# Streamlit Dashboard
+
+The project includes an interactive financial dashboard built using **Streamlit**.
+
+The dashboard connects with FastAPI backend APIs and provides a user-friendly interface for managing and analyzing financial data.
+
+## Dashboard Features
+
+- JWT based user login
+- View total income
+- View total expenses
+- Calculate savings
+- View transactions
+- Add new transactions
+- Expense category visualization
+- Real-time data from FastAPI APIs
+
+
+## Run Dashboard
+
+Activate virtual environment:
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dashboard dependencies:
+
+```bash
+pip install streamlit plotly requests
+```
+
+Start FastAPI backend:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Open another terminal and run:
+
+```bash
+streamlit run dashboard/app.py
+```
+
+Dashboard URL:
+
+```
+http://localhost:8501
+```
+
+---
+
+# Analytics and Visualization
+
+The system performs financial analysis and generates visualization reports.
+
+## Category Wise Expense Chart
+
+Shows expenses based on different categories.
+
+Example:
+
+```
+Food      500
+Travel    800
+Shopping  300
+```
+
+## Income vs Expense Chart
+
+Shows comparison between total income and total expenses.
+
+Generated charts:
+
+```
+charts/
+
+├── expense_chart.png
+└── income_expense.png
 ```
 
 ---
@@ -338,7 +432,7 @@ cd Finance-Analytics-System
 python -m venv venv
 ```
 
-Activate:
+Activate environment:
 
 Windows:
 
@@ -390,13 +484,13 @@ http://127.0.0.1:8000/openapi.json
 
 # Running Tests
 
-Run:
+Run automated tests:
 
 ```bash
 pytest
 ```
 
-Current tests:
+Current tests include:
 
 - Home endpoint test
 - Transactions endpoint test
@@ -415,8 +509,9 @@ Example result:
 - Monthly financial reports
 - Cloud database integration
 - Docker deployment
-- Frontend dashboard
+- Advanced dashboard improvements
 - Machine learning based expense prediction
+- Cloud hosting deployment
 
 ---
 
