@@ -84,7 +84,7 @@ Finance-Analytics-System
 │ ├── security.py # Password hashing
 │ ├── dependencies.py # JWT authentication
 │ ├── migrate.py # Database migration
-│ └── init.py
+│ └── _init.py
 │
 ├── dashboard
 │ └── app.py # Streamlit dashboard
