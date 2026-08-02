@@ -2,21 +2,24 @@
 
 A Python-based financial management and analytics system that tracks income and expenses, provides REST APIs, performs financial analysis, and generates visualization reports.
 
-The project is built using **FastAPI**, **SQLite**, **Pandas**, and **Matplotlib** with a clean backend architecture.
+The project is built using **FastAPI**, **SQLite**, **Pandas**, and **Matplotlib** with JWT based user authentication.
 
 ---
 
 # Features
 
+- User registration
+- User login
+- JWT authentication
+- Protected REST APIs
 - Add financial transactions
-- View all transactions
+- View user transactions
 - Delete transactions
 - Calculate total income
 - Calculate total expenses
 - Calculate savings
 - Category-wise expense analysis
 - Generate financial charts
-- REST API using FastAPI
 - SQLite database integration
 - Automated API testing using Pytest
 
@@ -34,6 +37,13 @@ The project is built using **FastAPI**, **SQLite**, **Pandas**, and **Matplotlib
 ## Database
 
 - SQLite
+
+## Authentication
+
+- JWT Authentication
+- OAuth2 Password Flow
+- Passlib
+- Bcrypt
 
 ## Data Analysis
 
@@ -54,28 +64,24 @@ The project is built using **FastAPI**, **SQLite**, **Pandas**, and **Matplotlib
 
 # Project Structure
 
-
+```
 Finance-Analytics-System
 
-```
 ├── app
 │   ├── main.py                  # FastAPI API routes
 │   ├── models.py                # Request and response models
 │   ├── database.py              # Database connection
 │   ├── crud.py                  # Database CRUD operations
-│   ├── analytics_service.py     # Analytics logic for API
-│   ├── analytics.py             # Standalone financial analysis
-│   ├── charts.py                # Data visualization charts
-│   ├── insert_data.py           # Insert sample data
-│   ├── view_data.py             # View database records
+│   ├── analytics_service.py     # User based analytics logic
+│   ├── users.py                 # Register and Login APIs
+│   ├── auth.py                  # JWT token creation
+│   ├── security.py              # Password hashing
+│   ├── dependencies.py          # JWT authentication
+│   ├── migrate.py               # Database migration
 │   └── __init__.py
 │
 ├── database
 │   └── finance.db               # SQLite database
-│
-├── charts
-│   ├── expense_chart.png
-│   └── income_expense.png
 │
 ├── tests
 │   └── test_api.py              # API test cases
@@ -92,19 +98,18 @@ Finance-Analytics-System
 
 Stores user information.
 
-Example:
-
 ```
 user_id
 name
 email
+password
 ```
+
+---
 
 ## Transactions Table
 
 Stores financial transactions.
-
-Example:
 
 ```
 transaction_id
@@ -117,9 +122,69 @@ transaction_date
 
 ---
 
+# Authentication API
+
+## Register User
+
+### POST
+
+```
+/register
+```
+
+Request:
+
+```json
+{
+  "name": "Mantu Kumar",
+  "email": "mantu@gmail.com",
+  "password": "123456"
+}
+```
+
+Response:
+
+```json
+{
+  "message": "User registered successfully"
+}
+```
+
+---
+
+# Login API
+
+### POST
+
+```
+/login
+```
+
+Request:
+
+```json
+{
+  "email": "mantu@gmail.com",
+  "password": "123456"
+}
+```
+
+Response:
+
+```json
+{
+  "access_token": "your_token",
+  "token_type": "bearer"
+}
+```
+
+Use this token in Swagger Authorize.
+
+---
+
 # API Endpoints
 
-## Home
+## Home API
 
 ### GET
 
@@ -139,7 +204,11 @@ Response:
 
 # Transactions API
 
-## Get All Transactions
+All transaction APIs require JWT authentication.
+
+---
+
+## Get Transactions
 
 ### GET
 
@@ -147,8 +216,22 @@ Response:
 /transactions
 ```
 
-Returns all financial transactions.
+Returns only logged-in user's transactions.
 
+Example:
+
+```json
+[
+  {
+    "transaction_id": 1,
+    "user_id": 1,
+    "amount": 500,
+    "category": "Food",
+    "transaction_type": "Expense",
+    "transaction_date": "2026-08-01"
+  }
+]
+```
 
 ---
 
@@ -164,13 +247,16 @@ Request:
 
 ```json
 {
-  "user_id": 1,
   "amount": 300,
   "category": "Shopping",
   "transaction_type": "Expense",
   "transaction_date": "2026-08-03"
 }
 ```
+
+Note:
+
+`user_id` is automatically taken from JWT token.
 
 Response:
 
@@ -208,11 +294,15 @@ Response:
 
 # Financial Analytics API
 
-## GET
+## Get Analytics
+
+### GET
 
 ```
 /analytics
 ```
+
+Returns financial summary of logged-in user.
 
 Example Response:
 
@@ -222,36 +312,6 @@ Example Response:
   "total_expense": 1300,
   "savings": 700
 }
-```
-
----
-
-# Analytics and Visualization
-
-The system generates:
-
-## Category Wise Expense Chart
-
-Shows expenses based on categories.
-
-Example:
-
-```
-Food      500
-Travel    800
-```
-
-## Income vs Expense Chart
-
-Shows comparison between income and expenses.
-
-Generated files:
-
-```
-charts/
-│
-├── expense_chart.png
-└── income_expense.png
 ```
 
 ---
@@ -272,13 +332,13 @@ cd Finance-Analytics-System
 
 ---
 
-## Create Virtual Environment
+# Create Virtual Environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate environment:
+Activate:
 
 Windows:
 
@@ -288,7 +348,7 @@ venv\Scripts\activate
 
 ---
 
-## Install Dependencies
+# Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -296,7 +356,7 @@ pip install -r requirements.txt
 
 ---
 
-# Running the Application
+# Run Application
 
 Start FastAPI server:
 
@@ -304,7 +364,7 @@ Start FastAPI server:
 uvicorn app.main:app --reload
 ```
 
-Server will run:
+Server:
 
 ```
 http://127.0.0.1:8000
@@ -330,13 +390,13 @@ http://127.0.0.1:8000/openapi.json
 
 # Running Tests
 
-Run automated tests:
+Run:
 
 ```bash
 pytest
 ```
 
-Current tests include:
+Current tests:
 
 - Home endpoint test
 - Transactions endpoint test
@@ -350,22 +410,8 @@ Example result:
 
 ---
 
-# Sample Analytics Output
-
-```
-Total Income: 2000
-
-Total Expense: 1300
-
-Savings: 700
-```
-
----
-
 # Future Improvements
 
-- User authentication system
-- JWT based login
 - Monthly financial reports
 - Cloud database integration
 - Docker deployment
