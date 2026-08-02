@@ -3,7 +3,7 @@ import requests
 import plotly.express as px
 
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = "https://finance-analytics-system.onrender.com"
 
 
 st.set_page_config(
